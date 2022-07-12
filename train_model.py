@@ -1,10 +1,17 @@
 import pickle
-import cv2
+from MODEL import create_model
 
-pickle_reader = open("data/x.db","rb")
-X = pickle.load(pickle_reader)
+X = pickle.load(open("data/x.db","rb"))
+Y = pickle.load(open("data/y.db","rb"))
+IMG_SIZE = 100
+CATEGORIES = ["happy","not happy"]
+X = X/255.0
 
 
-for img in X :
-    cv2.imshow("img",img)
-    cv2.waitKey(1000)
+
+
+model = create_model()
+
+model.fit(X,Y,batch_size = 32,epochs = 5,validation_split = 0.1)
+
+model.save_weights("data/model_weights")
